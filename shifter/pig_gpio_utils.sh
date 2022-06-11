@@ -24,6 +24,14 @@
 # MILS v Milliseconds delay
 
 
+# param $1 : the pin to pulse
+function pulse_pin() {
+  local pin=$1
+  toggle_pin $pin
+  sleep 0.1
+  toggle_pin $pin
+}
+
 # Returns the value of a pin (0 or 1) and dies on failure
 # param $1 : the pin to read
 function read_pin() {
@@ -49,7 +57,6 @@ function write_pin() {
 function toggle_pin() {
   local pin=$1
   value=$(read_pin $pin)
-  echo current value is $value
 
   if [ $value -lt 0 ]; then
     echo "Something horrible happened reading pin $pin"
@@ -61,7 +68,6 @@ function toggle_pin() {
     new_value=1
   fi
 
-  echo pigs write $pin $new_value
   pigs write $pin $new_value
   if [ $? -ne 0 ]; then
     echo "Something horrible happened writing pin $pin"
